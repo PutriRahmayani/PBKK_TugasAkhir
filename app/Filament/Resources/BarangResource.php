@@ -7,6 +7,7 @@ use App\Filament\Resources\BarangResource\RelationManagers;
 use App\Models\Barang;
 use Faker\Core\Number;
 use Filament\Forms;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -18,30 +19,39 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+use function Laravel\Prompts\search;
+
 class BarangResource extends Resource
 {
     protected static ?string $model = Barang::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-computer-desktop';
+
+    protected static ?string $navigationLabel = 'Barang';
+
+    protected static ?string $navigationGroup = 'Data Barang';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('nama'),
-                TextInput::make('merek'),
-                TextInput::make('jumlah'),
+                Select::make('ruangan_id')
+                ->required()
+                ->relationship('ruangan', 'nama_ruangan'),
+                TextInput::make('nama')->required(),
+                TextInput::make('merek')->required(),
+                TextInput::make('jumlah')->required(),
                 Select::make('kondisi')    
                     ->options([
                         'baik' => 'Baik',
                         'rusak' => 'Rusak'    
                     ])->required(),
-                TextInput::make('asal_barang'),
+                TextInput::make('asal_barang')->required(),
                 Select::make('ketersediaan')    
                     ->options([
                         'ada' => 'Ada',
                         'tidak' => 'Tidak'    
-                    ])->required(),
+                    ]),
             ]);
     }
 
@@ -49,20 +59,13 @@ class BarangResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('nama'),
-                TextColumn::make('merek'),
+                TextColumn::make('ruangan.nama_ruangan'),
+                TextColumn::make('nama')->Searchable(),
+                TextColumn::make('merek')->Searchable(),
                 TextColumn::make('jumlah'),   
-                SelectColumn::make('kondisi')
-                ->options([
-                    'baik' => 'Baik',
-                    'rusak' => 'Rusak',
-                ]),
-                TextColumn::make('asal_barang'),
-                SelectColumn::make('ketersediaan')
-                ->options([
-                    'ada' => 'Ada',
-                    'tidak' => 'Tidak',
-                ])
+                TextColumn::make('kondisi')->searchable(),
+                TextColumn::make('asal_barang')->Searchable(),
+                TextColumn::make('ketersediaan')->searchable()
             ])
             ->filters([
                 //

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\LaporanResource\Pages;
 use App\Filament\Resources\LaporanResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Contracts\Support\Htmlable;
 
 class ListLaporans extends ListRecords
 {
@@ -15,5 +16,10 @@ class ListLaporans extends ListRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+
+    public function getTitle(): string
+    {
+        return "Laporan";
     }
 }

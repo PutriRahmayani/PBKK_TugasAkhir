@@ -11,17 +11,21 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Contracts\HasTable;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use stdClass;
 
 class RuanganResource extends Resource
 {
     protected static ?string $model = Ruangan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-map-pin';
+
+    protected static ?string $navigationLabel = 'Ruangan';
 
     public static function form(Form $form): Form
     {
@@ -42,12 +46,7 @@ class RuanganResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('nama_ruangan'),
-                SelectColumn::make('lantai')
-                    ->options([
-                        '1' => '1',
-                        '2' => '2',
-                        '3' => '3',
-                    ])
+                TextColumn::make('lantai')->searchable()
             ])
             ->filters([
                 //

@@ -8,6 +8,7 @@ use App\Models\Laporan;
 use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -21,7 +22,9 @@ class LaporanResource extends Resource
 {
     protected static ?string $model = Laporan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document';
+
+    protected static ?string $navigationLabel = 'Laporan';
 
     public static function form(Form $form): Form
     {
@@ -29,7 +32,7 @@ class LaporanResource extends Resource
             ->schema([
                 TextInput::make('judul_laporan')->required(),
                 DateTimePicker::make('tanggal')->required(),
-                RichEditor::make('isi_laporan')->required()
+                TextArea::make('isi_laporan')->required()
             ]);
     }
 
